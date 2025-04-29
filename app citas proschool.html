@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pro School</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      background-color: #f4f6f8;
+      color: #333;
+    }
+    header {
+      background-color: #004080;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    img {
+      width: 100%;
+      height: auto;
+    }
+    .container {
+      padding: 20px;
+    }
+    .card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    h2 {
+      color: #006600;
+    }
+    .accordion {
+      margin-bottom: 20px;
+    }
+    .accordion-item {
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+    .accordion-header {
+      padding: 15px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .accordion-body {
+      padding: 15px;
+      display: none;
+    }
+    form input, form select, form textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    form button {
+      background-color: #006600;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .success-message {
+      color: green;
+      margin-top: 10px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Pro School</h1>
+  </header>
+
+  <img src="https://github.com/Albertosvi/WEB-APP-1/blob/main/school%20image.png?raw=true" alt="Imagen Escuela">
+
+  <div class="container">
+
+    <div class="card">
+      <h2>¿Quiénes somos?</h2>
+      <p>En Pro School, creemos en preparar a nuestros alumnos para el futuro, hoy...</p>
+      <h3>Misión</h3>
+      <p>Brindar una educación innovadora que integre tecnología...</p>
+      <h3>Visión</h3>
+      <p>Ser una escuela líder en innovación educativa...</p>
+      <h3>Valores</h3>
+      <ul>
+        <li>Innovación</li><li>Responsabilidad</li><li>Adaptabilidad</li>
+        <li>Colaboración</li><li>Excelencia</li><li>Curiosidad</li><li>Respeto</li>
+      </ul>
+    </div>
+
+    <div class="accordion">
+      <div class="accordion-item">
+        <div class="accordion-header">Tecnología y Programación</div>
+        <div class="accordion-body">Contenidos de tecnología y programación...</div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header">Innovación y Nuevas Tendencias</div>
+        <div class="accordion-body">Contenidos de innovación y tendencias...</div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header">Habilidades del Siglo XXI</div>
+        <div class="accordion-body">Contenidos sobre habilidades del siglo XXI...</div>
+      </div>
+      <!-- Agrega más acordeones según sea necesario -->
+    </div>
+
+    <div class="card">
+      <h2>Agendar una cita</h2>
+      <form id="appointmentForm">
+        <input type="text" name="nombre" placeholder="Nombre completo" required>
+        <input type="tel" name="telefono" placeholder="Teléfono" required>
+        <input type="email" name="correo" placeholder="Correo electrónico" required>
+        <select name="sexo" required>
+          <option value="">Sexo</option>
+          <option value="Femenino">Femenino</option>
+          <option value="Masculino">Masculino</option>
+        </select>
+        <select name="grado" required>
+          <option value="">Grado</option>
+          <option value="Primaria">Primaria</option>
+          <option value="Secundaria">Secundaria</option>
+          <option value="Preparatoria">Preparatoria</option>
+        </select>
+        <input type="date" name="fecha" required>
+        <input type="time" name="hora" required>
+        <textarea name="comentarios" placeholder="Comentarios adicionales"></textarea>
+        <button type="submit">Agendar</button>
+        <div class="success-message" id="successMessage">👍 Gracias, tu cita ha sido agendada. ⏳ Redirigiendo al inicio... 🎉 Te contactaremos pronto.</div>
+      </form>
+    </div>
+
+  </div>
+
+  <script>
+    // Acordeón interactivo
+    document.querySelectorAll('.accordion-header').forEach(header => {
+      header.addEventListener('click', () => {
+        const body = header.nextElementSibling;
+        body.style.display = body.style.display === 'block' ? 'none' : 'block';
+      });
+    });
+
+    // Conexión del formulario con Google Apps Script
+    const form = document.getElementById('appointmentForm');
+    const successMessage = document.getElementById('successMessage');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+
+      fetch('https://script.google.com/macros/s/AKfycbyh-F9iNr82zCpCmStnYP0P9UnM2uO4sC8CfhaeLr1DRFGNyBQbRydtnfbYAEEI7bontQ/exec', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.text())
+      .then(text => {
+        if (text === 'Success') {
+          form.reset();
+          successMessage.style.display = 'block';
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          setTimeout(() => {
+            successMessage.style.display = 'none';
+          }, 5000);
+        }
+      })
+      .catch(error => console.error('Error!', error.message));
+    });
+  </script>
+
+</body>
+</html>
